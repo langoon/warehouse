@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "Clone repository"
+
+git clone https://github.com/langoon/warehouse.git
+
+echo "Install dependencies"
+
+pip3 install -r requirements.txt 
+
+echo "Setup webserver"
+
+sudo apt-get update
+sudo apt-get full-upgrade
+# download the latest instance of Node
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+# install Node
+sudo apt-get install -y nodejs
+# start webserver
+node scripts/webserver.js
+# smoketest the webserver
+cURL localhost:8080
+
+echo "Initialization complete"
