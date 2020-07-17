@@ -2,6 +2,8 @@
 
 ## Installation
 
+### Setup VCN Server
+
 Clone remote repository.
 
 ```
