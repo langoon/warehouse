@@ -1,8 +1,6 @@
-# Warehouse Zone Yellow
+# Warehouse
 
 ## Installation
-
-### Setup VCN Server
 
 Clone remote repository.
 
