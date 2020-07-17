@@ -2,6 +2,12 @@
 
 ## Installation
 
+Clone remote repository.
+
+```
+git clone https://github.com/langoon/warehouse.git
+```
+
 Grant execution rights on the init file.
 
 ```
