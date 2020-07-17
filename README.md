@@ -22,6 +22,12 @@ sudo ./scripts/init
 
 It should clone the repo, install all dependencies and start a webserver running on port `8080`.
 
+If the webserver needs to be restarted, then use this script:
+
+```
+node scripts/webserver.js
+```
+
 ## Usage
 
 This repo follows a [GitHub Flow](https://guides.github.com/introduction/flow/) branching strategy, whereas all new features are branched out of the `master` branch into a named `feature` branch, this branch is committed to regularly and when the work is done a push is made and a pull request created to merge with master.
