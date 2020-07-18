@@ -13,8 +13,9 @@ CROP = 10
 
 print("Opening 'example.jpg'")
 
-image = cv2.imread("example.jpg")
+# image = capture_camera_image()
 
+image = cv2.imread("./tests/example.jpg")
 coordinates = extract_section_coordinates_from_image(image, THRESHOLD_BREAKPOINT)
 image = crop_section_from_image(image, coordinates, CROP)
 height, width = extract_dimensions_from_image(image, PIXELS_PER_METRIC)

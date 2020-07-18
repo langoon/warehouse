@@ -33,9 +33,17 @@ sudo ./scripts/reboot
 
 ## Usage
 
-This repo follows a [GitHub Flow](https://guides.github.com/introduction/flow/) branching strategy, whereas all new features are branched out of the `master` branch into a named `feature` branch, this branch is committed to regularly and when the work is done a push is made and a pull request created to merge with master.
+### Tests
+
+To run all unit tests, run this command:
+
+```
+python3 -m unittest
+```
 
 ### Workflow
+
+This repo follows a [GitHub Flow](https://guides.github.com/introduction/flow/) branching strategy, whereas all new features are branched out of the `master` branch into a named `feature` branch, this branch is committed to regularly and when the work is done a push is made and a pull request created to merge with master.
 
 #### 1. Create a feature branch
 
@@ -92,3 +100,13 @@ Complete the pull request and your feature will now be deployed to the remote re
 #### 4. Deploy
 
 A successfull merge with master will be automatically deployed to the device if set up properly in GitHub Webhooks.
+
+## Troubleshooting
+
+### Can't install `picamera`
+
+When installing this module on a device other than Raspberry Pi it own't work. To fix this you better install it directly from GitHub to use the classes and methods:
+
+```
+pip3 install git+https://github.com/waveform80/picamera.git
+```
