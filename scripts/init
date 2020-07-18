@@ -1,20 +1,41 @@
 #!/bin/bash
 
+echo "Upgrade binaries"
+
+sudo apt-get update
+sudo apt-get full-upgrade
+
+echo "Start VNC Server"
+
+# Ensure that VNC Server is started everytime the device is being rebooted
+sudo systemctl enable vncserver-x11-serviced.service #systemd
+sudo update-rc.d vncserver-x11-serviced defaults #initd
+
+# Start VNC Server
+sudo systemctl start vncserver-x11-serviced.service #systemd
+sudo /etc/init.d/vncserver-x11-serviced start #initd
+
 echo "Install dependencies"
 
 pip3 install -r requirements.txt 
 
-echo "Setup webserver"
+echo "Start webserver"
 
-sudo apt-get update
-sudo apt-get full-upgrade
-# download the latest instance of Node
+# Close running instances of Node if any
+ps aux | grep " node " | grep -v grep
+nodepids=$(ps aux | grep " node " | grep -v grep | cut -c10-15)
+for nodepid in ${nodepids[@]}
+do
+kill -9 $nodepid
+done
+
+# Download the latest instance of Node
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-# install Node
+# Install Node
 sudo apt-get install -y nodejs
-# start webserver
+# Start webserver
 node scripts/webserver.js
-# smoketest the webserver
+# Smoketest the webserver
 cURL localhost:8080
 
-echo "Initialization complete"
+echo "Initialization completed"
