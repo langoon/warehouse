@@ -1,31 +1,34 @@
-# Warehouse Zone Yellow
+# Warehouse
 
 ## Installation
 
-Clone remote repository.
+### Clone remote repository
+
+Login to Raspberry P, clone the remote repository and `cd` in to the working directory.
 
 ```
 git clone https://github.com/langoon/warehouse.git
+cd warehouse
 ```
 
-Grant execution rights on the init file.
+### Initialize the workspace
+
+Grant execution rights and execute the script using admin privileges. 
 
 ```
 chmod +x ./scripts/init
-```
-
-Initialize the workspace by running this script.
-
-```
 sudo ./scripts/init
 ```
 
-It should clone the repo, install all dependencies and start a webserver running on port `8080`.
+This should upgrade all the binaries, start a running instance of VNC Server, install all the project dependencies and start a webserver running on port `8080`.
 
-If the webserver needs to be restarted, then use this script:
+### Reboot the workspace
+
+Sometimes you might need to reboot the services on the workspace. You can do that running this script.
 
 ```
-node scripts/webserver.js
+chmod +x ./scripts/reboot
+sudo ./scripts/reboot
 ```
 
 ## Usage
