@@ -1,8 +1,6 @@
 name: Langoon Warehouse On Pull Request Workflow
 
-on: [pull_request]
-  branches:
-    - master
+on: [push, pull_request]
 
 jobs:
   build:
