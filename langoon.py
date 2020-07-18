@@ -1,6 +1,8 @@
 # A shared Langoon library of utility functions used for extracting an processing book metadata
 
+import io
 import numpy
+#import picamera
 from cv2 import cv2
 
 def order_coordinates(coordinates):
@@ -127,3 +129,14 @@ def extract_section_coordinates_from_image(image, threshold_breakpoint):
         # Bottom-left
         coordinates[3] = approx[3] - BORDER_WIDTH
         return coordinates
+
+# TODO(unitario): picamera requires rasbian. Have not been able to make it work on my macOS environment. Chack if anything can be done.
+#def capture_camera_image():
+  # Captures an image with the camera and returns that as an image like object
+  # There's a lot of configurations, please read about them here: https://picamera.readthedocs.io/en/release-1.13/api_camera.html#picamera
+  #with picamera.PiCamera() as camera:
+    #try:
+      #image = io.BytesIO()
+      #return camera.capture(image)
+    #finally:
+      #camera.close()
