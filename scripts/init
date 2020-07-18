@@ -9,11 +9,11 @@ echo "Start VNC Server"
 
 # Ensure that VNC Server is started everytime the device is being rebooted
 sudo systemctl enable vncserver-x11-serviced.service #systemd
-sudo update-rc.d vncserver-x11-serviced defaults #initd
+update-rc.d vncserver-x11-serviced defaults #initd
 
 # Start VNC Server
 sudo systemctl start vncserver-x11-serviced.service #systemd
-sudo /etc/init.d/vncserver-x11-serviced start #initd
+/etc/init.d/vncserver-x11-serviced start #initd
 
 echo "Install dependencies"
 
