@@ -27,10 +27,10 @@ echo "Restarting VNC Server"
 
 # Stop VNC Server
 sudo systemctl stop vncserver-x11-serviced.service #systemd
-sudo /etc/init.d/vncserver-x11-serviced stop #initd
+/etc/init.d/vncserver-x11-serviced stop #initd
 
 # Start VNC Server
 sudo systemctl start vncserver-x11-serviced.service #systemd
-sudo /etc/init.d/vncserver-x11-serviced start #initd
+/etc/init.d/vncserver-x11-serviced start #initd
 
 echo "Reboot completed"
