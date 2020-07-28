@@ -19,9 +19,9 @@ echo "Webservers stopped"
 echo "Restarting webserver ..."
 
 # start webserver
-node scripts/webserver.js
+node webserver/start.js
 # smoketest the webserver
-cURL localhost:8080
+curl localhost:8080
 
 echo "Restarting VNC Server"
 
