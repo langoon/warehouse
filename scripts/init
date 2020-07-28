@@ -1,9 +1,43 @@
 #!/bin/bash
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+
+if [ "${machine}" != "Linux" ]; then
+    echo ""
+    echo "You are running on a ${machine} . This script will only work on Linux."
+    echo ""
+    echo "These are the binaries that you need to install:"
+    echo ""
+    echo " - libzbar0"
+    echo " - tesseract-ocr"
+    echo " - nodejs"
+    echo ""
+    echo "Then install all dependencies:"
+    echo ""
+    echo "> pip3 install -r requirements.txt"
+    echo ""
+    exit 0
+fi
+
 echo "Upgrade binaries"
 
 sudo apt-get update
 sudo apt-get full-upgrade
+
+echo "Install binaries"
+
+# For finding and processing barcodes
+sudo apt-get install libzbar0
+# For OCR recognition
+# https://github.com/tesseract-ocr/tesseract/wiki#installation
+sudo apt install tesseract-ocr
 
 echo "Start VNC Server"
 
@@ -34,8 +68,6 @@ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 # Install Node
 sudo apt-get install -y nodejs
 # Start webserver
-node scripts/webserver.js
-# Smoketest the webserver
-cURL localhost:8080
+node webserver/start.js
 
 echo "Initialization completed"
