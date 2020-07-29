@@ -1,13 +1,8 @@
 import unittest
 
-import os
 from cv2 import cv2
 from tkinter import Entry, Button, Label, LabelFrame, Frame, Tk
 from commands.langoon import Window
-
-if os.environ.get('DISPLAY','') == '':
-    print('Running on a CI environment. Using :0.0')
-    os.environ.__setitem__('DISPLAY', ':0.0')
 
 class TestWindow(Window, unittest.TestCase):
 

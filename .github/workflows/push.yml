@@ -1,26 +1,28 @@
-name: Langoon Warehouse On Pull Request Workflow
+name: CI
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
+    name: Complete CI workflow
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.7]
+
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+      - name: Setup an emulated environment
+        run: |
+          # Setup CI environment
+          sudo apt-get update
+          sudo apt-get install tk-dev python3-tk python3 python3.7 python-pip python3-pip
+          sudo rm /usr/bin/python
+          sudo ln -s /usr/bin/python3.7 /usr/bin/python
+          sudo apt-get install xvfb
+      - name: Install binaries
+        run: |
+          sudo scripts/install-binaries.sh
       - name: Install dependencies
         run: |
-          sudo apt install tesseract-ocr
-          sudo apt-get install libzbar0
-          python -m pip install --upgrade pip
-          pip install flake8 pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          sudo scripts/install-dependencies.sh
       - name: Lint code
         run: |
           # stop the build if there are Python syntax errors or undefined names
@@ -29,4 +31,11 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Run tests
         run: |
+          # Start virtual display driver
+          disp=:12
+          screen=0
+          geom=640x480x24
+          exec Xvfb $disp -screen $screen $geom 2>/tmp/Xvfb.log &
+          export DISPLAY=:12
+          # Run TestSuite
           python3 -m unittest
