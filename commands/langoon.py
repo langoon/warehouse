@@ -510,22 +510,23 @@ class Image:
     def extract_barcode_from_image(self, image):
         # Takes an image finds all barcodes and returns its data and type
 
-        ean13 = None
+        decoded_barcodes = decode(image)
+        GTIN13 = None
 
-        for barcode in decode(image):
-            if not isinstance(barcode, str):
-                barcode = barcode.data.decode("utf-8") 
+        for decoded_barcode in decoded_barcodes:
+            if not isinstance(decoded_barcode, str):
+                barcode = decoded_barcode.data.decode("utf-8") 
             # If ISBN 13 return it
             if isbnlib.is_isbn13(barcode):
                 return barcode
             # If ISBN 10 convert to ISBN 13 and return
             if isbnlib.is_isbn10(barcode): 
                 return isbnlib.to_isbn13(barcode)
-            # If EAN13, return only if no ISBN number was found
-            if barcode.type == "EAN13":
-                ean13 = barcode
+            # If GTIN13, return only if no ISBN number was found
+            if len(barcode) == 13:
+                GTIN13 = barcode
 
-        return ean13
+        return GTIN13
 
     def extract_ocr_from_image(self, image):
         return pytesseract.image_to_string(image)
