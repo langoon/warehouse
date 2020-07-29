@@ -1,10 +1,10 @@
-name: CI
+name: Run integration workflow
 
 on: [push]
 
 jobs:
   build:
-    name: Complete CI workflow
+    name: Build workspace, lint and test code changes
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
           sudo scripts/install-binaries.sh
       - name: Install dependencies
         run: |
-          sudo scripts/install-dependencies.sh
+          pip install -r requirements.txt
       - name: Lint code
         run: |
           # stop the build if there are Python syntax errors or undefined names
