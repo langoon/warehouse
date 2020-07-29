@@ -1,6 +1,5 @@
 import unittest
 from commands.langoon import Util
-from cv2 import cv2
 
 class TestUtil(Util, unittest.TestCase):
 
