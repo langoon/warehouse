@@ -10,7 +10,7 @@ class TestWindow(Window, unittest.TestCase):
             "values": {},
             "widgets": {}
         }
-        self.parent = Frame()
+        self.parent = self.create_window("this is a title")
 
     def tearDown(self):
         self.parent.destroy()
