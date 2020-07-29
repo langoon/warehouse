@@ -9,12 +9,23 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
+if [ "${machine}" == "Mac" ]
+then
+
+    # Check for Homebrew, install if we don't have it
+    if test ! $(which brew); then
+        echo "Installing homebrew"
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+
+fi
+
 if [ "${machine}" == "Linux" ] || [ "${machine}" == "Mac" ]
 then
 
-    sudu scrips/install-binaries.sh
-    sudu scrips/install-dependencies.sh
-    sudu scrips/start-services.sh
+    ./scripts/install-binaries.sh
+    ./scripts/install-dependencies.sh
+    ./scripts/start-services.sh
 
 else
     echo "Initialization script is made to work with a Mac or Linux environment."

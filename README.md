@@ -13,11 +13,11 @@ cd warehouse
 
 ### Initialize the workspace
 
-Grant execution rights and execute the script using admin privileges. 
+Grant execution rights and execute the script using admin privileges.
 
 ```
-chmod +x ./scripts/init
-sudo ./scripts/init
+chmod +x ./scripts/install-binaries.sh ./scripts/install-dependencies.sh ./scripts/start-services.sh ./scripts/initialize.sh
+./scripts/initialize.sh
 ```
 
 This should upgrade all the binaries, start a running instance of VNC Server, install all the project dependencies and start a webserver running on port `8080`.
@@ -27,8 +27,8 @@ This should upgrade all the binaries, start a running instance of VNC Server, in
 Sometimes you might need to reboot the services on the workspace. You can do that running this script.
 
 ```
-chmod +x ./scripts/reboot
-sudo ./scripts/reboot
+chmod +x ./scripts/start-services.sh
+./scripts/start-services.sh
 ```
 
 ## Usage
@@ -79,7 +79,7 @@ Also make sure it is pushed to the remove repo:
 git push -u origin updating-readme-installation-instructions
 ```
 
-#### 3. Merge 
+#### 3. Merge
 
 When it is time to merge the code with master, you need to make sure that there are no merge conflicts. You do that by pulling in the most recent state of the code base.
 

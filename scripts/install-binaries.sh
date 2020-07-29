@@ -55,6 +55,8 @@ if [ "${machine}" == "Mac" ]; then
     echo "Upgrading"
     echo ""
 
+    sudo chown -R $(whoami) $(brew --prefix)/*
+
     brew upgrade
 
     echo ""
