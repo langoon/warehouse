@@ -13,7 +13,8 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
-if [ "${machine}" == "Linux" ]; then
+if [ "${machine}" == "Linux" ] && [ -z "${!CI}" ]
+then
 
     echo ""
     echo "Starting VNC Server ..."
@@ -29,6 +30,25 @@ if [ "${machine}" == "Linux" ]; then
 
 fi
 
+echo ""
+echo "Generating SSL certificate"
+echo ""
+
+country="SE"
+commonname="warehouse.langoon"
+state="Stockholms Län"
+locality="Stockholm"
+organization="Langoon AB"
+organizationalunit="IT"
+
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 13210 -nodes -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname"
+
+cert=$(<cert.pem)
+key=$(<key.pem)
+
+rm cert.pem
+rm key.pem
+
 # Close running instances of Node if any
 ps aux | grep " node " | grep -v grep
 nodepids=$(ps aux | grep " node " | grep -v grep | cut -c10-15)
@@ -42,4 +62,4 @@ echo "Starting webserver ..."
 echo ""
 
 # Start webserver
-node webserver/start.js
+DEVICE_TOKEN="${1}" SSL_KEY="${key}" SSL_CERT="${cert}" node webserver/start.js

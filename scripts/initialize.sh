@@ -25,7 +25,7 @@ then
 
     ./scripts/install-binaries.sh
     ./scripts/install-dependencies.sh
-    ./scripts/start-services.sh
+    ./scripts/start-services.sh ${1}
 
 else
     echo "Initialization script is made to work with a Mac or Linux environment."

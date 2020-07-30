@@ -4,4 +4,9 @@ echo ""
 echo "Installing dependencies"
 echo ""
 
-pip3 install -r requirements.txt 
+if [ -z "${!CI}" ]
+then
+    pip3 install -r requirements.txt 
+else
+    pip install -r requirements.txt 
+fi

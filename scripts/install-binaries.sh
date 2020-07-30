@@ -15,12 +15,17 @@ esac
 
 if [ "${machine}" == "Linux" ]; then
 
-    echo ""
-    echo "Upgrading"
-    echo ""
+    # Don't upgrade if running on a CI environment as it will require a lot of time
+    if [ -z "${!CI}" ]; then
 
-    sudo apt-get update
-    sudo apt-get full-upgrade
+        echo ""
+        echo "Upgrading"
+        echo ""
+
+        sudo apt-get update
+        sudo apt-get full-upgrade
+
+    fi
 
     echo ""
     echo "Installing Flake8"

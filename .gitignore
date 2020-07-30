@@ -1,6 +1,7 @@
 # Workspace specific
 
-optimized-example.jpg
+cert.pem
+key.pem
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

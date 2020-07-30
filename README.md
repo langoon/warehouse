@@ -15,20 +15,24 @@ cd warehouse
 
 Grant execution rights and execute the script using admin privileges.
 
+If you are initalizing the workspace on a Raspberry Pi then a DEVICE_TOKEN has to be specified. The device token is used bu clients for making authenticated requests to the web server. It cannot be empty.
+
 ```
 chmod +x ./scripts/install-binaries.sh ./scripts/install-dependencies.sh ./scripts/start-services.sh ./scripts/initialize.sh
-./scripts/initialize.sh
+./scripts/initialize.sh [DEVICE_TOKEN]
 ```
 
 This should upgrade all the binaries, start a running instance of VNC Server, install all the project dependencies and start a webserver running on port `8080`.
 
-### Reboot the workspace
+### Starting services
 
 Sometimes you might need to reboot the services on the workspace. You can do that running this script.
 
+If you are initalizing the workspace on a Raspberry Pi then a DEVICE_TOKEN has to be specified.
+
 ```
 chmod +x ./scripts/start-services.sh
-./scripts/start-services.sh
+./scripts/start-services.sh [DEVICE_TOKEN]
 ```
 
 ## Usage
