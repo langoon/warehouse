@@ -1,0 +1,19 @@
+name: Deployment
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - "master"
+
+jobs:
+  deploy:
+    name: Deploy to devices
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to yellow station
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: "https://${{ secrets.DEVICE_IP }}/commands/git-pull"
+          method: "POST"
+          bearerToken: Bearer ${{ secrets.DEVICE_TOKEN }}
