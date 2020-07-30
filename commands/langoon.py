@@ -379,9 +379,10 @@ class Command(Util):
     def send_response(self, data):
         # Parse dictionary or array into a JSON string and print it
         response = {}
-        command = inspect.stack()[len(inspect.stack()) - 2][3]
+        command = inspect.stack()[1][0].f_locals["self"].__class__.__name__
         response["command"] = command
-        response["options"] = self.options
+        if hasattr(self, "options"):
+            response["options"] = self.options
         response["data"] = data
         print(json.dumps(response))
 
