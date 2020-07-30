@@ -6,13 +6,13 @@ on:
       - "master"
 
 jobs:
-deploy:
-  name: Check devices are online
-  runs-on: ubuntu-latest
-  steps:
-    - name: Ping yellow station
-      uses: fjogeleit/http-request-action@master
-      with:
-        url: "https://${{ secrets.DEVICE_IP }}/commands/ping"
-        method: "POST"
-        bearerToken: Bearer ${{ secrets.DEVICE_TOKEN }}
+  deploy:
+    name: Check devices are online
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping yellow station
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: "https://${{ secrets.DEVICE_IP }}/commands/ping"
+          method: "POST"
+          bearerToken: Bearer ${{ secrets.DEVICE_TOKEN }}
