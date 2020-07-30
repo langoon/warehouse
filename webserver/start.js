@@ -7,7 +7,7 @@ const options = {
   cert: process.env.SSL_CERT,
 };
 
-createServer(options, (req, res) => {
+const server = createServer(options, (req, res) => {
   if (req.method !== "POST")
     res
       .writeHead(405, "Method Not Allowed", { "Content-Type": "text/plain" })
@@ -78,4 +78,12 @@ createServer(options, (req, res) => {
       }
     });
   }
-}).listen(443, () => console.log(`Webserver is running on port 443 ...`));
+}).listen(443, () => {
+  console.log(`Webserver is running on port 443 ...`);
+  if (process.env.SMOKETEST === "true") {
+    console.log("\nClosing webserver ...\n");
+    server.close(() => {
+      console.log("Webserver has closed\n");
+    });
+  }
+});

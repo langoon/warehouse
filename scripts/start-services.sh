@@ -79,7 +79,7 @@ echo ""
 
 if [ "${ci}" == "true"  ]
 then
-    DEVICE_TOKEN="${token}" SSL_KEY="${key}" SSL_CERT="${cert}" node webserver/start.js & pkill -9 node
+    DEVICE_TOKEN="${token}" SSL_KEY="${key}" SSL_CERT="${cert}" SMOKETEST=true node webserver/start.js
 else
     DEVICE_TOKEN="${token}" SSL_KEY="${key}" SSL_CERT="${cert}" node webserver/start.js
 fi
