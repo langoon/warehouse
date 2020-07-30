@@ -1,10 +1,13 @@
-name: Run integration workflow
+name: Continuous Integration
 
 on: [push]
+  branches:
+    - '**'
+    - '!master'
 
 jobs:
   build:
-    name: Build workspace, lint and test code changes
+    name: Build, lint and test
     runs-on: ubuntu-latest
 
     steps:
@@ -38,4 +41,4 @@ jobs:
           exec Xvfb $disp -screen $screen $geom 2>/tmp/Xvfb.log &
           export DISPLAY=:12
           # Run TestSuite
-          python3 -m unittest
+          python -m unittest
