@@ -23,10 +23,13 @@ jobs:
           sudo apt-get install xvfb
       - name: Install binaries
         run: |
-          sudo scripts/install-binaries.sh
+          sudo scripts/install-binaries.sh --ci true
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+      - name: Start services
+        run: |
+          sudo scripts/start-services.sh --token ${{ secrets.DEVICE_TOKEN }} --ci true
       - name: Lint code
         run: |
           # stop the build if there are Python syntax errors or undefined names

@@ -1,8 +1,18 @@
 #!/bin/bash
 
-echo ""
-echo "Starting services"
-echo ""
+ci=${ci:-false}
+token=${token:-}
+
+while [ $# -gt 0 ]; do
+
+   if [[ $1 == *"--"* ]]; then
+        param="${1/--/}"
+        declare $param="$2"
+        # echo $1 $2 // Optional to see the parameter:value result
+   fi
+
+  shift
+done
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -13,7 +23,12 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
-if [ "${machine}" == "Linux" ]; then
+echo ""
+echo "Starting services"
+echo ""
+
+if [ "${machine}" == "Linux" ] && [ "${ci}" == "false"  ]
+then
 
     echo ""
     echo "Starting VNC Server ..."
@@ -29,6 +44,25 @@ if [ "${machine}" == "Linux" ]; then
 
 fi
 
+echo ""
+echo "Generating SSL certificate"
+echo ""
+
+country="SE"
+commonname="warehouse.langoon"
+state="Stockholms Län"
+locality="Stockholm"
+organization="Langoon AB"
+organizationalunit="IT"
+
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 13210 -nodes -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname"
+
+cert=$(<cert.pem)
+key=$(<key.pem)
+
+rm cert.pem
+rm key.pem
+
 # Close running instances of Node if any
 ps aux | grep " node " | grep -v grep
 nodepids=$(ps aux | grep " node " | grep -v grep | cut -c10-15)
@@ -42,4 +76,10 @@ echo "Starting webserver ..."
 echo ""
 
 # Start webserver
-node webserver/start.js
+
+if [ "${ci}" == "true"  ]
+then
+    DEVICE_TOKEN="${token}" SSL_KEY="${key}" SSL_CERT="${cert}" SMOKETEST=true node webserver/start.js
+else
+    DEVICE_TOKEN="${token}" SSL_KEY="${key}" SSL_CERT="${cert}" node webserver/start.js
+fi

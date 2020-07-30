@@ -1,8 +1,17 @@
 #!/bin/bash
 
-echo ""
-echo "Installing binaries"
-echo ""
+ci=${ci:-false}
+
+while [ $# -gt 0 ]; do
+
+   if [[ $1 == *"--"* ]]; then
+        param="${1/--/}"
+        declare $param="$2"
+        # echo $1 $2 // Optional to see the parameter:value result
+   fi
+
+  shift
+done
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -13,14 +22,24 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
+
+echo ""
+echo "Installing binaries"
+echo ""
+
 if [ "${machine}" == "Linux" ]; then
 
-    echo ""
-    echo "Upgrading"
-    echo ""
+    # Don't upgrade if running on a CI environment as it will require a lot of time
+    if [ "${ci}" == "false"  ]; then
 
-    sudo apt-get update
-    sudo apt-get full-upgrade
+        echo ""
+        echo "Upgrading"
+        echo ""
+
+        sudo apt-get update
+        sudo apt-get full-upgrade
+
+    fi
 
     echo ""
     echo "Installing Flake8"
