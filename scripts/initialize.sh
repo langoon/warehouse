@@ -1,5 +1,19 @@
 #!/bin/bash
 
+ci=${ci:-false}
+token=${token:-}
+
+while [ $# -gt 0 ]; do
+
+   if [[ $1 == *"--"* ]]; then
+        param="${1/--/}"
+        declare $param="$2"
+        # echo $1 $2 // Optional to see the parameter:value result
+   fi
+
+  shift
+done
+
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     machine=Linux;;
@@ -23,9 +37,9 @@ fi
 if [ "${machine}" == "Linux" ] || [ "${machine}" == "Mac" ]
 then
 
-    ./scripts/install-binaries.sh
-    ./scripts/install-dependencies.sh
-    ./scripts/start-services.sh ${1}
+    ./scripts/install-binaries.sh --ci ${ci}
+    ./scripts/install-dependencies.sh --ci ${ci}
+    ./scripts/start-services.sh --token ${token} --ci ${ci}
 
 else
     echo "Initialization script is made to work with a Mac or Linux environment."

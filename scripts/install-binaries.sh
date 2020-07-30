@@ -1,8 +1,17 @@
 #!/bin/bash
 
-echo ""
-echo "Installing binaries"
-echo ""
+ci=${ci:-false}
+
+while [ $# -gt 0 ]; do
+
+   if [[ $1 == *"--"* ]]; then
+        param="${1/--/}"
+        declare $param="$2"
+        # echo $1 $2 // Optional to see the parameter:value result
+   fi
+
+  shift
+done
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -13,10 +22,15 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
+
+echo ""
+echo "Installing binaries"
+echo ""
+
 if [ "${machine}" == "Linux" ]; then
 
     # Don't upgrade if running on a CI environment as it will require a lot of time
-    if [ -z "${!CI}" ]; then
+    if [ "${ci}" == "false"  ]; then
 
         echo ""
         echo "Upgrading"

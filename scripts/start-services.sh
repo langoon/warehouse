@@ -1,8 +1,18 @@
 #!/bin/bash
 
-echo ""
-echo "Starting services"
-echo ""
+ci=${ci:-false}
+token=${token:-}
+
+while [ $# -gt 0 ]; do
+
+   if [[ $1 == *"--"* ]]; then
+        param="${1/--/}"
+        declare $param="$2"
+        # echo $1 $2 // Optional to see the parameter:value result
+   fi
+
+  shift
+done
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -13,7 +23,11 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
-if [ "${machine}" == "Linux" ] && [ -z "${!CI}" ]
+echo ""
+echo "Starting services"
+echo ""
+
+if [ "${machine}" == "Linux" ] && [ "${ci}" == "false"  ]
 then
 
     echo ""
@@ -62,4 +76,8 @@ echo "Starting webserver ..."
 echo ""
 
 # Start webserver
-DEVICE_TOKEN="${1}" SSL_KEY="${key}" SSL_CERT="${cert}" node webserver/start.js
+DEVICE_TOKEN="${token}" SSL_KEY="${key}" SSL_CERT="${cert}" node webserver/start.js
+
+if [ "${ci}" == "true"  ]; then
+    sudo killall node
+fi
