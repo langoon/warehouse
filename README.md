@@ -19,7 +19,7 @@ If you are initalizing the workspace on a Raspberry Pi then a DEVICE_TOKEN has t
 
 ```
 chmod +x ./scripts/install-binaries.sh ./scripts/install-dependencies.sh ./scripts/start-services.sh ./scripts/initialize.sh
-./scripts/initialize.sh --token <token> --ci<true|false>
+./scripts/initialize.sh --token <token> --ci <true|false>
 ```
 
 This should upgrade all the binaries, start a running instance of VNC Server, install all the project dependencies and start a webserver running on port `8080`.
@@ -32,7 +32,7 @@ If you are initalizing the workspace on a Raspberry Pi then a DEVICE_TOKEN has t
 
 ```
 chmod +x ./scripts/start-services.sh
-./scripts/start-services.sh  --token <token> --ci<true|false>
+./scripts/start-services.sh  --token <token> --ci <true|false>
 ```
 
 ## Usage

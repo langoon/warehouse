@@ -76,8 +76,10 @@ echo "Starting webserver ..."
 echo ""
 
 # Start webserver
-DEVICE_TOKEN="${token}" SSL_KEY="${key}" SSL_CERT="${cert}" node webserver/start.js
 
-if [ "${ci}" == "true"  ]; then
-    sudo killall node
+if [ "${ci}" == "true"  ]
+then
+    DEVICE_TOKEN="${token}" SSL_KEY="${key}" SSL_CERT="${cert}" node webserver/start.js & pkill -9 node
+else
+    DEVICE_TOKEN="${token}" SSL_KEY="${key}" SSL_CERT="${cert}" node webserver/start.js
 fi
