@@ -19,7 +19,7 @@ echo ""
 
 if [ "${ci}" == "true"  ]
 then
-    sudo pip install -H -r requirements.txt 
+    sudo pip install -r requirements.txt 
 else
     pip3 install -r requirements.txt 
 fi

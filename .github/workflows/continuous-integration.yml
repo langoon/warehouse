@@ -26,7 +26,7 @@ jobs:
           sudo scripts/install-binaries.sh --ci true
       - name: Install dependencies
         run: |
-          sudo scripts/install-dependencies.sh --token ${{ secrets.DEVICE_TOKEN }} --ci true
+          pip install -r requirements.txt
       - name: Start services
         run: |
           sudo scripts/start-services.sh --token ${{ secrets.DEVICE_TOKEN }} --ci true
