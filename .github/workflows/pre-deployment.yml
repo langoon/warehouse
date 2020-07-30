@@ -6,11 +6,7 @@ on:
       - "master"
 
 jobs:
-<<<<<<< HEAD
   pre_deploy:
-=======
-  deploy:
->>>>>>> ac453627b6efbd46322e025fa0564c1edd20b7c7
     name: Check devices are online
     runs-on: ubuntu-latest
     steps:
