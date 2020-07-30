@@ -18,7 +18,7 @@ class TestCommand(Command, unittest.TestCase):
         self.send_response({ "first": 111, "second": 222 })
         response = sys.stdout.getvalue()
         sys.stdout.close()
-        self.assertDictEqual(json.loads(response), {"command": "_run_code", "options": {"first": 111, "second": 222, "third": 333}, "data": {"first": 111, "second": 222}})
+        self.assertDictEqual(json.loads(response), {"command": "TestCommand", "options": {"first": 111, "second": 222, "third": 333}, "data": {"first": 111, "second": 222}})
 
 if __name__ == '__main__':
     unittest.main()
