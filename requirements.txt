@@ -1,8 +1,9 @@
-numpy==1.19.0
-opencv-python==4.3.0.36
-utils==1.0.1
-pillow==7.2.0
-pyzbar==0.1.8
-isbnlib==3.10.3
-pytesseract==0.3.4
+numpy>=1.19.0
+opencv-python>=4.1
+utils>=1.0.1
+pillow>=7.2.0
+pyzbar>=0.1.8
+isbnlib>=3.10.3
+pytesseract>=0.3.4
+flake8>=3.8.3
 #picamera==1.13

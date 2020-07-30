@@ -79,13 +79,13 @@ class Window(Util):
         # Margin between the frames in the grid
         MARGIN = 10
 
+        window = self.create_window(title, color)
+
         # Create a class attribute dictionary to store the widgets and its values
         self.window = {
             "widgets": {},
             "values": {}
         }
-
-        window = self.create_window(title, color)
 
         container_widget = tkinter.Frame(window)
 
@@ -96,6 +96,13 @@ class Window(Util):
             rely = (1 - CONTAINER_WIDTH / RATIO) / 2
         )
 
+        # Check that the grid is of valid shape
+        self.check_type(grid, list)
+        for row in grid:
+            self.check_type(row, list)
+            for column in row:
+                self.check_type(column, dict)
+
         # Get the shape of the grid
         rows, columns = self.get_shape(grid)
 
@@ -103,11 +110,8 @@ class Window(Util):
         container_widget.rowconfigure(rows - 1, weight=1)
         container_widget.columnconfigure(columns - 1, weight=1)
 
-        self.check_type(grid, list)
         for row_index, row in enumerate(grid):
-            self.check_type(row, list)
             for column_index, column in enumerate(row):
-                self.check_type(column, dict)
                 self.check_keys(column, "prop")
                 self.check_unique(self.window["values"], column.get("prop"))
                 
@@ -128,10 +132,10 @@ class Window(Util):
                 if offset is None:
                     offset = 0
  
-                if column_index + (columnspan - 1) + offset > columns:
+                if column_index + columnspan + offset > columns:
                     raise Exception("The columns are exceeding the size of the grid. Check your columnspan/rowspan settings.")
 
-                if row_index + (rowspan - 1) > rows:
+                if row_index + rowspan > rows:
                     raise Exception("The rows are exceeding the size of the grid. Check your columnspan/rowspan settings.")
 
                 # Update container in order to get it's dimensions
@@ -169,7 +173,8 @@ class Window(Util):
 
     def parse_fields(self, frame, frame_prop, fields):
         # Takes a single dimensional list of dictionaries representing input fields and generates it into GUI widgets
-
+        
+        self.check_type(fields, list)
         for field in fields:
             self.check_type(field, dict)
             self.check_keys(field, "prop", "title", "type")
@@ -255,7 +260,6 @@ class Window(Util):
 
         return entry
 
-
     def create_button(self, parent, title, callback):
         # Creates a button widget and returns it
 
@@ -279,14 +283,22 @@ class Window(Util):
 
         # Resize the image propotionally
         image_width, image_height = load.size
+
+        # Scale from height
         if width is None and height is not None:
-            width = int(image_width / image_height * height)
+            width  = int(height * image_width / image_height)
+        # Scale from width
         if height is None and width is not None:
-            height = int(image_width / image_height * width)
-        load = load.resize((width, height))
+            height = int(width * image_height / image_width)
+        # Maintain size as is
+        if height is None and width is None:
+            width = image_width
+            height = image_height
+
+        load = load.resize((width, height), PIL.Image.ANTIALIAS)
 
         # Create render which can be read by Tkinter
-        render = PIL.ImageTk.PhotoImage(load)
+        render = PIL.ImageTk.PhotoImage(load, master=parent)
         label = tkinter.Label(parent, image=render, height=height, width=width)
 
         # Reattach the image to prevent garbage collection from deleting it
@@ -317,10 +329,7 @@ class Window(Util):
     def get_value(self, frame_prop, field_prop):
         # Gets a value from `window.values`
 
-        if field_prop:
-            return self.window["widgets"][frame_prop][field_prop]
-        else:
-            return self.window["widgets"][frame_prop]
+        return self.window["values"][frame_prop][field_prop]
 
     def set_value(self, frame_prop, field_prop, value):
         # Set a value in `window.values` and its respective widget
@@ -510,22 +519,23 @@ class Image:
     def extract_barcode_from_image(self, image):
         # Takes an image finds all barcodes and returns its data and type
 
-        ean13 = None
+        decoded_barcodes = decode(image)
+        GTIN13 = None
 
-        for barcode in decode(image):
-            if not isinstance(barcode, str):
-                barcode = barcode.data.decode("utf-8") 
+        for decoded_barcode in decoded_barcodes:
+            if not isinstance(decoded_barcode, str):
+                barcode = decoded_barcode.data.decode("utf-8") 
             # If ISBN 13 return it
             if isbnlib.is_isbn13(barcode):
                 return barcode
             # If ISBN 10 convert to ISBN 13 and return
             if isbnlib.is_isbn10(barcode): 
                 return isbnlib.to_isbn13(barcode)
-            # If EAN13, return only if no ISBN number was found
-            if barcode.type == "EAN13":
-                ean13 = barcode
+            # If GTIN13, return only if no ISBN number was found
+            if len(barcode) == 13:
+                GTIN13 = barcode
 
-        return ean13
+        return GTIN13
 
     def extract_ocr_from_image(self, image):
         return pytesseract.image_to_string(image)
